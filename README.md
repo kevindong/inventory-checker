@@ -2,7 +2,7 @@
 
 This is a Docker container that will periodically check specified webpages for the (lack of) "out-of-stock" text and sends you notifications via the [IFTTT](https://ifttt.com) app when the text disappears, which indicates that the item for sale is back in stock.
 
-This is not good code, but it should work.
+**This is not good code, but it should work.**
 
 ## IFTTT setup
 
@@ -32,7 +32,7 @@ This is not good code, but it should work.
 
 1. Clone this repo onto a machine that is always running and has Docker installed.
 
-2. `cd` into this repo. Optionally, make any customizations you may want to make now by editing the files. Then run `docker build .` Save the ID generated at the very end. It'll be referred to as `<DOCKER_ID>` later.
+2. `cd` into this repo. Optionally, make any customizations you may want to make now by editing the files. Then run `docker build -t inventory-checker:latest .`
 
 3. Run this container with:
 
@@ -42,8 +42,8 @@ This is not good code, but it should work.
       --restart always \
       -e 'WEBPAGES=<PAYLOAD_HERE>' \
       -e 'IFTTT_API_KEY=<IFTTT_API_KEY>' \
-      --name ic \
-      <DOCKER_ID>
+      --name inventory-checker \
+      inventory-checker:latest
     ```
 
     Replace `<PAYLOAD_HERE>` with a JSON in this format, but minified:
@@ -62,6 +62,10 @@ This is not good code, but it should work.
     ```
 
     Replace `<IFTTT_API_KEY>` with the IFTTT API key that you have.
+
+    Optionally, pass in the env var `ENABLE_NOT_IN_STOCK_NOTIFICATION=true` to get notifications if you want a notification when the scraper runs and doesn't find items in stock. 
+
+    Optionally, pass in a mounted volume at `/data` to persist a screenshot/text dump of a scraped webpage.
 
 4. Buy stuff when you get notified.
 
